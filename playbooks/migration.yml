@@ -1,0 +1,33 @@
+---
+- name: Migration Oracle vers PostgreSQL
+  hosts: migration_servers
+  become: "{{ migration_become | default(true) }}"
+  gather_facts: false
+  vars_files:
+    - ../vars/migration.yml
+  tasks:
+    - name: Valider les parametres avant de deployer
+      ansible.builtin.include_role:
+        name: oracle_precheck
+        tasks_from: validate.yml
+    - name: Verifier les dependances
+      ansible.builtin.include_role:
+        name: ora2pg_install
+    - name: Deployer la configuration et le pilote
+      ansible.builtin.include_role:
+        name: ora2pg_migration
+        tasks_from: setup.yml
+    - name: Controler Oracle
+      ansible.builtin.include_role:
+        name: oracle_precheck
+    - name: Controler PostgreSQL
+      ansible.builtin.include_role:
+        name: postgresql_precheck
+      when: migration_type != 'ASSESSMENT'
+    - name: Executer la migration
+      ansible.builtin.include_role:
+        name: ora2pg_migration
+    - name: Produire les controles apres migration
+      ansible.builtin.include_role:
+        name: migration_validation
+      when: migration_type != 'ASSESSMENT'

@@ -1,0 +1,4 @@
+---
+- import_playbook: migration.yml
+  vars:
+    requested_migration_type: SCHEMA
