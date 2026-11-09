@@ -1,0 +1,18 @@
+---
+migration_type: "{{ requested_migration_type | default('FULL') }}"
+oracle_host: ""
+oracle_port: 1521
+oracle_service: ""
+oracle_user: ""
+oracle_password: ""
+oracle_schema: ""
+oracle_schemas: "{{ [oracle_schema] if oracle_schema | length > 0 else [] }}"
+postgres_host: ""
+postgres_port: 5432
+postgres_db: ""
+postgres_user: ""
+postgres_password: ""
+migration_home: /opt/oracle-postgresql-migration
+ora2pg_install_packages: false
+ora2pg_packages: []
+postgres_schema_map: {}
