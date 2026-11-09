@@ -1,9 +1,9 @@
 # Oracle PostgreSQL Migration
 
 Orchestration Ansible de migrations Oracle vers PostgreSQL avec Ora2Pg. Le
-projet s'inspire de `full_exportPRD_v1.9.sh` et `full_export_v1.9.sh` : rapports,
+projet s'inspire de deux scripts shell de migration, l'un pour la production et l'autre pour la hors production : rapports,
 export des objets, chargement COPY et controles. Il ne lance pas ces scripts et
-ne reprend pas leurs dependances au referentiel DBS3.
+ne reprend pas leurs dependances au referentiel de la base oracle.
 
 ## Avant de commencer
 
