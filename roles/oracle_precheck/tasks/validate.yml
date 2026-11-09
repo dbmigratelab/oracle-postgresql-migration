@@ -1,0 +1,54 @@
+---
+- name: Verifier les parametres communs
+  ansible.builtin.assert:
+    that:
+      - migration_type in ['FULL', 'SCHEMA', 'DATA', 'ASSESSMENT']
+      - oracle_host is match('^[A-Za-z0-9._-]+$')
+      - oracle_service is match('^[A-Za-z0-9._-]+$')
+      - oracle_user is match('^[A-Za-z0-9_$#.-]+$')
+      - oracle_password | length > 0
+      - "'\n' not in oracle_password and '\r' not in oracle_password"
+      - oracle_port | int > 0 and oracle_port | int < 65536
+      - oracle_schemas is sequence and oracle_schemas is not string
+      - oracle_schemas | length > 0
+      - oracle_schemas | unique | length == oracle_schemas | length
+      - ansible_play_hosts_all | length == 1
+    fail_msg: Verifier le mode, la connexion Oracle et la liste oracle_schemas.
+  no_log: true
+
+- name: Verifier les parametres PostgreSQL avant leur deploiement
+  ansible.builtin.assert:
+    that:
+      - postgres_host is match('^[A-Za-z0-9._-]+$')
+      - postgres_db is match('^[A-Za-z0-9._-]+$')
+      - postgres_user is match('^[A-Za-z0-9._-]+$')
+      - postgres_password | length > 0
+      - "'\n' not in postgres_password and '\r' not in postgres_password"
+      - postgres_port | int > 0 and postgres_port | int < 65536
+    fail_msg: Verifier les parametres de connexion PostgreSQL.
+  no_log: true
+  when: migration_type != 'ASSESSMENT'
+
+- name: Verifier les noms de schemas Oracle et PostgreSQL
+  ansible.builtin.assert:
+    that:
+      - item is match('^[A-Za-z][A-Za-z0-9_$#]*$')
+      - item | length <= 63
+      - postgres_schema_map.get(item, item | lower) is match('^[a-z_][a-z0-9_]*$')
+      - postgres_schema_map.get(item, item | lower) | length <= 63
+    fail_msg: Nom de schema invalide ou trop long.
+  loop: "{{ oracle_schemas }}"
+
+- name: Initialiser la liste des schemas cibles
+  ansible.builtin.set_fact:
+    migration_target_schemas: []
+
+- name: Construire la liste des schemas cibles
+  ansible.builtin.set_fact:
+    migration_target_schemas: "{{ migration_target_schemas + [postgres_schema_map.get(item, item | lower)] }}"
+  loop: "{{ oracle_schemas }}"
+
+- name: Verifier l'unicite des schemas cibles
+  ansible.builtin.assert:
+    that: migration_target_schemas | unique | length == oracle_schemas | length
+    fail_msg: Plusieurs schemas Oracle correspondent au meme schema PostgreSQL.

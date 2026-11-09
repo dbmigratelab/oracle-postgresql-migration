@@ -1,0 +1,12 @@
+---
+- name: Tester la connexion Oracle pour chaque schema
+  ansible.builtin.command:
+    argv:
+      - ora2pg
+      - -c
+      - "{{ migration_home }}/{{ item }}/ora2pg.conf"
+      - -t
+      - SHOW_TABLE
+  loop: "{{ oracle_schemas }}"
+  changed_when: false
+  no_log: true

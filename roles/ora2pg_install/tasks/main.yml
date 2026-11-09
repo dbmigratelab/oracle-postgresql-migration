@@ -1,0 +1,31 @@
+---
+- name: Verifier la liste de paquets a installer
+  ansible.builtin.assert:
+    that: ora2pg_packages | length > 0
+    fail_msg: Renseigner ora2pg_packages pour votre distribution.
+  when: ora2pg_install_packages | bool
+
+- name: Installer les paquets demandes
+  ansible.builtin.package:
+    name: "{{ ora2pg_packages }}"
+    state: present
+  when: ora2pg_install_packages | bool
+
+- name: Verifier Ora2Pg
+  ansible.builtin.command: ora2pg --version
+  changed_when: false
+
+- name: Verifier les pilotes Perl Oracle et PostgreSQL
+  ansible.builtin.command: perl -MDBD::Oracle -MDBD::Pg -e 1
+  changed_when: false
+  when: migration_type != 'ASSESSMENT'
+
+- name: Verifier le pilote Perl Oracle
+  ansible.builtin.command: perl -MDBD::Oracle -e 1
+  changed_when: false
+  when: migration_type == 'ASSESSMENT'
+
+- name: Verifier le client PostgreSQL
+  ansible.builtin.command: psql --version
+  changed_when: false
+  when: migration_type != 'ASSESSMENT'

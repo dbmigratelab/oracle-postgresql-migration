@@ -1,0 +1,17 @@
+---
+- name: Migrer chaque schema
+  ansible.builtin.command:
+    argv:
+      - "{{ migration_home }}/migration_oracle_postgresql.sh"
+      - "{{ item }}"
+      - "{{ migration_type }}"
+  environment:
+    MIGRATION_HOME: "{{ migration_home }}"
+    TARGET_SCHEMA: "{{ postgres_schema_map.get(item, item | lower) }}"
+    PGHOST: "{{ postgres_host }}"
+    PGPORT: "{{ postgres_port | string }}"
+    PGDATABASE: "{{ postgres_db }}"
+    PGUSER: "{{ postgres_user }}"
+    PGPASSWORD: "{{ postgres_password }}"
+  loop: "{{ oracle_schemas }}"
+  no_log: true

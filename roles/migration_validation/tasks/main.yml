@@ -1,0 +1,38 @@
+---
+- name: Generer le controle Ora2Pg TEST_COUNT
+  ansible.builtin.command:
+    argv:
+      - ora2pg
+      - -c
+      - "{{ migration_home }}/{{ item }}/ora2pg.conf"
+      - -t
+      - TEST_COUNT
+      - -o
+      - test_count.txt
+      - -b
+      - "{{ migration_home }}/{{ item }}/reports"
+  loop: "{{ oracle_schemas }}"
+  no_log: true
+  when: migration_type in ['FULL', 'DATA']
+
+- name: Produire les comptages PostgreSQL exacts
+  ansible.builtin.command:
+    argv:
+      - psql
+      - -X
+      - -v
+      - ON_ERROR_STOP=1
+      - -v
+      - "target_schema={{ postgres_schema_map.get(item, item | lower) }}"
+      - -o
+      - "{{ migration_home }}/{{ item }}/reports/postgresql_counts.txt"
+      - -f
+      - "{{ migration_home }}/sql/validation.sql"
+  environment:
+    PGHOST: "{{ postgres_host }}"
+    PGPORT: "{{ postgres_port | string }}"
+    PGDATABASE: "{{ postgres_db }}"
+    PGUSER: "{{ postgres_user }}"
+    PGPASSWORD: "{{ postgres_password }}"
+  loop: "{{ oracle_schemas }}"
+  no_log: true

@@ -1,0 +1,41 @@
+---
+- name: Creer les repertoires de travail
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0700'
+  loop: "{{ [migration_home, migration_home ~ '/sql'] + (oracle_schemas | map('regex_replace', '^', migration_home ~ '/') | list) }}"
+
+- name: Deployer le pilote
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../scripts/migration_oracle_postgresql.sh"
+    dest: "{{ migration_home }}/migration_oracle_postgresql.sh"
+    mode: '0700'
+
+- name: Creer les repertoires de rapports
+  ansible.builtin.file:
+    path: "{{ migration_home }}/{{ item }}/reports"
+    state: directory
+    mode: '0700'
+  loop: "{{ oracle_schemas }}"
+
+- name: Deployer les controles SQL
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../sql/{{ item }}"
+    dest: "{{ migration_home }}/sql/{{ item }}"
+    mode: '0600'
+  loop:
+    - prepare.sql
+    - validation.sql
+    - target_precheck.sql
+
+- name: Generer une configuration Ora2Pg par schema
+  ansible.builtin.template:
+    src: "{{ playbook_dir }}/../templates/ora2pg.conf.j2"
+    dest: "{{ migration_home }}/{{ migration_schema }}/ora2pg.conf"
+    mode: '0600'
+  loop: "{{ oracle_schemas }}"
+  loop_control:
+    loop_var: migration_schema
+    label: "{{ migration_schema }}"
+  no_log: true

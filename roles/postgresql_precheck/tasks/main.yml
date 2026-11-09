@@ -1,0 +1,44 @@
+---
+- name: Verifier les parametres PostgreSQL
+  ansible.builtin.assert:
+    that:
+      - postgres_host is match('^[A-Za-z0-9._-]+$')
+      - postgres_db is match('^[A-Za-z0-9._-]+$')
+      - postgres_user is match('^[A-Za-z0-9._-]+$')
+      - postgres_password | length > 0
+      - "'\n' not in postgres_password and '\r' not in postgres_password"
+      - postgres_port | int > 0 and postgres_port | int < 65536
+    fail_msg: Verifier les parametres de connexion PostgreSQL.
+  no_log: true
+
+- name: Tester la connexion PostgreSQL
+  ansible.builtin.command: psql -X -v ON_ERROR_STOP=1 -c 'SELECT 1'
+  environment: &pg_environment
+    PGHOST: "{{ postgres_host }}"
+    PGPORT: "{{ postgres_port | string }}"
+    PGDATABASE: "{{ postgres_db }}"
+    PGUSER: "{{ postgres_user }}"
+    PGPASSWORD: "{{ postgres_password }}"
+  changed_when: false
+  no_log: true
+
+- name: Verifier les tables cibles pour DATA
+  ansible.builtin.command:
+    argv:
+      - psql
+      - -X
+      - -A
+      - -t
+      - -v
+      - ON_ERROR_STOP=1
+      - -v
+      - "target_schema={{ postgres_schema_map.get(item, item | lower) }}"
+      - -f
+      - "{{ migration_home }}/sql/target_precheck.sql"
+  environment: *pg_environment
+  loop: "{{ oracle_schemas }}"
+  register: target_checks
+  changed_when: false
+  failed_when: target_checks.rc != 0 or (target_checks.stdout | trim | int) < 1
+  no_log: true
+  when: migration_type == 'DATA'
