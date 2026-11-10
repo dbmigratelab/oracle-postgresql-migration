@@ -54,12 +54,3 @@ modifications concurrentes : figer la source et la cible pendant les controles.
 Effectuer les tests applicatifs, mettre a jour les statistiques PostgreSQL et
 decider la bascule selon les criteres de recette etablis.
 
-## Differences avec les scripts historiques
-
-Ce projet ne consulte ni ne met a jour DBS3, ne choisit pas automatiquement la
-cible, ne cree pas de base ni de role et ne publie pas de rapports sur Apache.
-Les cibles de production et hors production sont configurees explicitement dans
-les variables et inventaires. Les scripts historiques de collecte/audit, les
-regles de nommage `--norm`, exclusions et optimisations de parallelisme ne sont
-pas reproduits. Integrer ces fonctions seulement apres validation de leur
-adaptation a votre environnement.
