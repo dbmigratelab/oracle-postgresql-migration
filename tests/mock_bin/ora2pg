@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+type=VERSION
+output=
+directory=.
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -t) type=$2; shift 2 ;;
+        -o) output=$2; shift 2 ;;
+        -b) directory=$2; shift 2 ;;
+        *) shift ;;
+    esac
+done
+printf 'ora2pg %s\n' "$type" >> "$FAKE_LOG"
+if [[ ${FAKE_FAIL_TYPE:-} == "$type" ]]; then
+    exit 1
+fi
+if [[ -n $output ]]; then
+    mkdir -p "$directory"
+    printf 'SELECT 1;\n' > "$directory/$output"
+    if [[ $type == PACKAGE ]]; then
+        rm "$directory/$output"
+        printf 'SELECT 1;\n' > "$directory/sample_PACKAGE.sql"
+    fi
+    if [[ $type == TABLE ]]; then
+        for prefix in INDEXES CONSTRAINTS FKEYS; do
+            printf 'SELECT 1;\n' > "$directory/${prefix}_$output"
+        done
+    fi
+fi
