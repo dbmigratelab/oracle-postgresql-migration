@@ -1,3 +1,7 @@
+Author & Maintainer
+Josselin Joly – Database Administrator (Oracle / PostgreSQL)
+Creator and maintainer of the Oracle to PostgreSQL Migration Framework.
+
 # Oracle PostgreSQL Migration
 
 Orchestration Ansible de migrations Oracle vers PostgreSQL avec Ora2Pg. Le
