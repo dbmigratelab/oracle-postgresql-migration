@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-#Copyright 2026 dbmigratelab
+# Copyright 2026 dbmigratelab
+# Licensed under the Apache License, Version 2.0.
+# See the LICENSE file in the project root for license information.
 set -euo pipefail
 umask 077
 if [[ $# -ne 2 ]]; then
