@@ -116,3 +116,8 @@ sequences ne sont pas resynchronisees par `DATA` seul. Voir
 `bash tests/smoke.sh` utilise Ansible et des commandes simulees. Ces tests
 verifient l'orchestration mais ne remplacent pas une recette sur Oracle,
 PostgreSQL et la version d'Ora2Pg utilisee en exploitation.
+
+## License
+
+This project is licensed under the Apache License 2.0.
+See the [LICENSE](LICENSE) file for details.
