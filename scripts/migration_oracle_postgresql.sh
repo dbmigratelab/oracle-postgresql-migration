@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#Copyright 2026 dbmigratelab
 set -euo pipefail
 umask 077
 if [[ $# -ne 2 ]]; then
