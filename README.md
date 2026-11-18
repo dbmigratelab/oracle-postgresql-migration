@@ -1,7 +1,3 @@
-Author & Maintainer
-Josselin Joly – Database Administrator (Oracle / PostgreSQL)
-Creator and maintainer of the Oracle to PostgreSQL Migration Framework.
-
 # Oracle PostgreSQL Migration
 
 Orchestration Ansible de migrations Oracle vers PostgreSQL avec Ora2Pg. Le
@@ -125,3 +121,8 @@ PostgreSQL et la version d'Ora2Pg utilisee en exploitation.
 
 This project is licensed under the Apache License 2.0.
 See the [LICENSE](LICENSE) file for details.
+
+# Author & Maintainer
+Josselin Joly – Database Administrator (Oracle / PostgreSQL)
+Creator and maintainer of the Oracle to PostgreSQL Migration Framework.
+Copyright 2026 dbmigratelab
