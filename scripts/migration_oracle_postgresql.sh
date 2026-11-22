@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# Copyright 2026 dbmigratelab
+# =============================================================================
+# Project     : Oracle to PostgreSQL Migration
+# Author      : Josselin Joly
+# Organization: DBMigrateLab / Data Admin Pro
+# Copyright   : Copyright (c) 2026 Josselin Joly
+# Repository  : https://github.com/dbmigratelab/oracle-postgresql-migration
+# =============================================================================
 # Licensed under the Apache License, Version 2.0.
 # See the LICENSE file in the project root for license information.
-# Author & Maintainer
-# Josselin Joly – Database Administrator (Oracle / PostgreSQL)
-# Creator and maintainer of the Oracle to PostgreSQL Migration Framework.
 
 set -euo pipefail
 umask 077
