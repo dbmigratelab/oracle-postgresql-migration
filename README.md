@@ -122,7 +122,22 @@ PostgreSQL et la version d'Ora2Pg utilisee en exploitation.
 This project is licensed under the Apache License 2.0.
 See the [LICENSE](LICENSE) file for details.
 
-# Author & Maintainer
-Josselin Joly – Database Administrator (Oracle / PostgreSQL)
-Creator and maintainer of the Oracle to PostgreSQL Migration Framework.
-Copyright 2026 dbmigratelab
+---
+
+## Author, Copyright & Maintainer
+
+**Created and maintained by Josselin Joly**
+
+Database Administrator & Migration Expert  
+Oracle / PostgreSQL
+
+**Project:** DBMigrateLab – Oracle to PostgreSQL Migration Framework
+
+**Copyright © 2026 Josselin Joly. All rights reserved.**
+
+GitHub: [DBMigrateLab](https://github.com/dbmigratelab)  
+Website: [Data Admin Pro](https://data-adminpro.fr)
+
+This project is an original work developed by Josselin Joly, based on professional experience in Oracle and PostgreSQL database administration and migration.
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
