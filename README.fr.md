@@ -1,5 +1,7 @@
 # Oracle PostgreSQL Migration
 
+**Copyright © 2026 Josselin Joly – DBMigrateLab**
+
 Orchestration Ansible de migrations Oracle vers PostgreSQL avec Ora2Pg. Le
 projet s'inspire de deux scripts shell de migration, l'un pour la production et l'autre pour la hors production : rapports,
 export des objets, chargement COPY et controles. Il ne lance pas ces scripts et
@@ -137,6 +139,7 @@ Oracle / PostgreSQL
 
 GitHub: [DBMigrateLab](https://github.com/dbmigratelab)  
 Website: [Data Admin Pro](https://data-adminpro.fr)
+[English](README.md) | [Français](README.fr.md)
 
 This project is an original work developed by Josselin Joly, based on professional experience in Oracle and PostgreSQL database administration and migration.
 
