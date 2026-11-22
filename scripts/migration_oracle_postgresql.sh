@@ -14,8 +14,9 @@ exit 2
 fi
 schema=$1
 mode=$2
-[[ $schema =~ ^[A-Za-z][A-Za-z0-9_$#]$ ]] || { echo "Schema Oracle invalide" >&2; exit 2; }
-case "$mode" in FULL|SCHEMA|DATA|ASSESSMENT) ;; ) echo "Mode invalide: $mode" >&2; exit 2 ;; esac
+schema_re='^[A-Za-z][A-Za-z0-9_$#]{0,62}$'
+[[ $schema =~ $schema_re ]] || { echo "Schema Oracle invalide" >&2; exit 2; }
+case "$mode" in FULL|SCHEMA|DATA|ASSESSMENT) ;; *) echo "Mode invalide: $mode" >&2; exit 2 ;; esac
 : "${MIGRATION_HOME:?MIGRATION_HOME requis}"
 if [[ $mode != ASSESSMENT ]]; then
 : "${PGHOST:?PGHOST requis}" "${PGPORT:?PGPORT requis}" "${PGDATABASE:?PGDATABASE requis}" "${PGUSER:?PGUSER requis}" "${TARGET_SCHEMA:?TARGET_SCHEMA requis}"

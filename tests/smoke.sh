@@ -8,6 +8,27 @@ export FAKE_LOG="$work/commands.log"
 export ANSIBLE_CONFIG="$root/ansible.cfg"
 vars="{\"migration_home\":\"$work/project\",\"migration_become\":false,\"oracle_host\":\"oracle.example\",\"oracle_service\":\"ORCL\",\"oracle_user\":\"reader\",\"oracle_password\":\"test\",\"oracle_schemas\":[\"APP\"],\"postgres_host\":\"postgres.example\",\"postgres_db\":\"migration\",\"postgres_user\":\"writer\",\"postgres_password\":\"test\"}"
 
+direct_project="$work/direct"
+mkdir -p "$direct_project"
+printf -v schema_63 'A%062d' 0
+printf -v schema_64 'A%063d' 0
+for schema in ALEX APP SCHEMA_CLIENT 'A$B' 'A#B' "$schema_63"; do
+    mkdir -p "$direct_project/$schema"
+    : > "$direct_project/$schema/ora2pg.conf"
+    MIGRATION_HOME="$direct_project" "$root/scripts/migration_oracle_postgresql.sh" "$schema" ASSESSMENT
+done
+for schema in "$schema_64" _INVALID 'A-B'; do
+    if MIGRATION_HOME="$direct_project" "$root/scripts/migration_oracle_postgresql.sh" "$schema" ASSESSMENT > /dev/null 2>&1; then
+        printf 'Schema Oracle invalide accepte: %s\n' "$schema" >&2
+        exit 1
+    fi
+done
+if MIGRATION_HOME="$direct_project" "$root/scripts/migration_oracle_postgresql.sh" APP INVALID > /dev/null 2>&1; then
+    echo 'Mode invalide accepte' >&2
+    exit 1
+fi
+printf 'validation directe du script: OK\n'
+
 for mode in assessment schema_migration data_migration migration; do
     : > "$FAKE_LOG"
     ansible-playbook -i "$root/tests/inventory.yml" "$root/playbooks/$mode.yml" -e "$vars" > "$work/ansible.log" || { cat "$work/ansible.log"; exit 1; }
