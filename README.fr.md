@@ -139,8 +139,9 @@ Oracle / PostgreSQL
 
 GitHub: [DBMigrateLab](https://github.com/dbmigratelab)  
 Website: [Data Admin Pro](https://data-adminpro.fr)
-[English](README.md) | [Français](README.fr.md)
 
 This project is an original work developed by Josselin Joly, based on professional experience in Oracle and PostgreSQL database administration and migration.
 
 Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
+
+[English](README.md) | [Français](README.fr.md)
