@@ -1,4 +1,11 @@
 ---
+# =============================================================================
+# Project     : Oracle to PostgreSQL Migration
+# Author      : Josselin Joly
+# Organization: DBMigrateLab / Data Admin Pro
+# Copyright   : Copyright (c) 2026 Josselin Joly
+# Repository  : https://github.com/dbmigratelab/oracle-postgresql-migration
+# =============================================================================
 - name: Verifier les parametres PostgreSQL
   ansible.builtin.assert:
     that:
