@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+# =============================================================================
+# Project     : Oracle to PostgreSQL Migration
+# Author      : Josselin Joly
+# Organization: DBMigrateLab / Data Admin Pro
+# Copyright   : Copyright (c) 2026 Josselin Joly
+# Repository  : https://github.com/dbmigratelab/oracle-postgresql-migration
+# =============================================================================
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 work=$(mktemp -d)
